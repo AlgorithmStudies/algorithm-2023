@@ -1,0 +1,12 @@
+from typing import List
+
+class Solution:
+    def solution(self, numbers: List[int]) -> int:
+        answer = 0
+        sum = 0
+        total = 0
+        for i in range(10):
+            sum += i
+        for j in range(len(numbers)):
+            total += numbers[j]
+        return answer = sum - total

@@ -1,0 +1,18 @@
+class Solution {
+    solution(n) {
+        let answer = 0;
+        let dp = new Array(n+1);
+        let num = 1234567;
+        for(let i=0; i<dp.length; i++){
+            if(i==0){
+                dp[i]=0;
+            }else if(i==1){
+                dp[i]=1;
+            }else{
+             dp[i]=(dp[i-1]%num)+(dp[i-2]%num)%num;
+            }
+        }
+        answer=dp[dp.length-1]%num;
+        return answer;
+    }
+}

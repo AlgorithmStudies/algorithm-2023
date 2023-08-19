@@ -1,0 +1,34 @@
+//짝맞추는 (O) ()[{}]/ 홀수면(X) 홀수라도,짝수라도 순서안맞으면 X
+//문제파악 되는 거 3+2 /
+//되는거 회전시킨게 들어있다면/1)[](){}/ 2)(){}[]/ 3) {}[]() 4)()[{}]  5)[{}]()
+//X부분이 false 공통패턴 지우기/마지막 오타확인 peek, push/pop 개념 다시한번확인
+import java.util.*;
+class Solution {
+    public int solution(String s) {
+        int answer=0;
+        for(int i=0;i<s.length();i++){
+            Stack<Character> stack=new Stack<>();
+            String str=s.substring(i, s.length())+s.substring(0,i);
+            for(int j=0;j<str.length();j++){
+                char c=str.charAt(j);//짝맞추게 반대편도 집어넣기
+                if(stack.isEmpty()){
+                    stack.push(c);
+                }else if(c ==')' && stack.peek() =='('){
+                    stack.pop(); //집어넣고 안맞으면 지워
+                }else if(c=='}' && stack.peek() =='{'){//있나 확인하려면 peek!!push아님!!
+                    stack.pop();//열심히 돌아갑니다~
+                }else if(c==']' && stack.peek() =='['){
+                    stack.pop();
+                }else{
+                    stack.push(c);//위에해줘도 홀수지우고 짝수만남아서 또해주기
+                }
+            }
+            if(stack.isEmpty()){
+                answer++;//완전히비워졌는지 확인하기위해 result 0값 표시필요
+    //           System.out.println(answer);
+            }
+        }
+     
+        return answer;
+    }
+}

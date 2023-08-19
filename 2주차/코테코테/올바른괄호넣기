@@ -1,0 +1,44 @@
+//스택없이
+class Solution {
+    boolean solution(String s) {
+       int openCount=0;
+        int closeCount=0;
+        
+        for(int i=0;i<s.length();i++){
+            if(s.charAt(i)=='('){
+                openCount++;
+            }else if(s.charAt(i)==')'){
+                closeCount++;
+            }
+            if(openCount<closeCount){// 왜 opentCount>closeCount는 에러일까?
+                return false;
+            } 
+        }
+        if(openCount==closeCount){
+            return true;
+        }
+        return false;            
+    }
+}
+//스택넣고하기
+//짝맞추기() true /홀수 ( / )=>false
+//1)스택없이 
+//2)스택넣기/오타확인꼭하기!!
+import java.util.*;
+class Solution {
+    boolean solution(String s) {
+        Stack<Character> stack=new Stack<>();
+        for(int i=0;i<s.length();i++){
+            if(s.charAt(i)=='('){
+                stack.push('(');//따로 true안해도됨!!개수맞으니까
+            }else if(s.charAt(i)==')'){
+                if(stack.isEmpty()){//다넣고 더이상 넣을게 없어서 비어있다면
+                    return false;
+                }
+                stack.pop();//냉큼지우기
+            }
+        }
+        return stack.isEmpty();//다비우고초기화
+    }
+}
+

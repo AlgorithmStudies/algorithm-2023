@@ -1,0 +1,28 @@
+class Solution {
+//기억할사항 피보나치수는 F(n-1)+f(n-2)로 재귀함수로 적용되는 수
+//재귀함수 특징 기억하기!여기서 f(5)=f(3)+f(4)=2+3=5;
+//변수이름맞나 최종검토하기, 머하나 잘못쳐서 에러남!
+    public int solution(int n) {
+        int answer = 0;
+        int [] dp=new int[n+1];//dp배열에다 n값넣어주기
+        
+        int num=1234567;
+        for(int i=0;i<dp.length;i++){
+            if(i==0){
+                dp[i]=0;
+            }else if(i==1){
+                dp[i]=1;
+            }else{
+             dp[i]=(dp[i-1]%num)+(dp[i-2]%num)%num;
+            }
+            //오버플로우로 20000범위 이상의 int범위를 넘어서기때문에 
+            //long으로 바꾸지않은이상 number로 나누어 
+            //int범위안에서 해결되게 한다 
+          
+        }
+        answer=dp[dp.length-1]%num;//배열인덱스는 하나더 적으므로 -1해주기
+        return answer;
+        
+    }
+}
+

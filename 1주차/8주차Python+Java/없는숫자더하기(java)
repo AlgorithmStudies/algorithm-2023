@@ -1,0 +1,16 @@
+import java.util.*;
+class Solution {
+    
+    public int solution(int[] numbers) {
+        int answer = 0;
+        int sum=0;
+        int total=0;
+        for(int i=0;i<10;i++){
+            sum+=i;//1~9전체더하기
+        }
+        for(int j=0;j<numbers.length;j++){
+            total+=numbers[j];//numbers만다더하기
+        }
+        return answer=sum-total;//전체에서 -numbers빼면 없는부분만나온다
+    }
+}

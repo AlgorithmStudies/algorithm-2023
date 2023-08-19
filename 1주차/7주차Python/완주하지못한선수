@@ -1,0 +1,13 @@
+import numpy as np
+
+class Solution:
+    def solution(self, participant, completion):
+        answer = ""
+        participant.sort()
+        completion.sort()
+        for i in range(len(completion)):
+            if participant[i] == completion[i]:
+                continue
+            else:
+                return participant[i]
+        return answer = participant[-1]

@@ -1,0 +1,43 @@
+import java.util.*;
+class Solution {
+    public int answer, m, n;
+    public int[][] map;
+    public boolean[][] water;
+    public int[][] dir = new int[][]{{1, 0}, {0, 1}};
+    public int solution(int m, int n, int[][] puddles) {
+        this.m = m;
+        this.n = n;
+        this.map = new int[n+1][m+1];
+        this.water = new boolean[n+1][m+1];
+        //물웅덩이
+        for(int i = 0; i < puddles.length; i++){
+            //인덱스상 처음n=3,두번째m=4니까 위치바꿔주기
+            water[puddles[i][1]][puddles[i][0]] = true;
+        }
+        
+        for(int i = 1; i <= n; i++){
+            for(int j = 1; j <= m; j++){
+                if(water[i][j]){//2,2
+                    map[i][j] = 0;
+                    continue;
+                }
+                if(i == 1){
+                    // 첫번째 행 처리 
+                    if(j == 1) {
+                        map[i][j] = 1; 
+                    } else {        //map[i][j-1](오른쪽) 
+                        map[i][j] = map[i][j-1]%1000000007;
+                    }   
+                } else if(j == 1){
+                    // 첫번째 열 처리//map[i-1][j](왼쪽)
+                    map[i][j] = map[i-1][j]%1000000007;
+                } else {
+                    // 나머지 행 처리
+                    map[i][j] = (map[i-1][j] + map[i][j-1])%1000000007;     
+       
+                }
+             }
+        }
+        return map[n][m];
+    }
+}

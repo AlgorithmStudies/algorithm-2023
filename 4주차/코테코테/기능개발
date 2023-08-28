@@ -1,0 +1,34 @@
+//93 | 1 | 7| 7/1=7
+//30 | 30 | 70 | 70/30=2.333 /3일후 올림 =>double타입 나누기 2+3=5/3=1+2 /3
+// 55| 5 | 45 | 45/5=9
+//개발기간=Math.ceil((double)(100-개발진도)/개발속도) 빨대로간다 9 3 7 =>슝 나간다
+//.stream().mapToInt(Integer::intValue).toArray()=> Stream<Integer>를 IntStream으로 변경한다.
+import java.util.*;
+class Solution {
+    public int[] solution(int[] progresses, int[] speeds) {
+      Queue<Integer> workDate=new LinkedList<>();//progresses 개발기간
+      ArrayList<Integer> release=new ArrayList<>();//speeds 배포당 개수
+        
+        //개발까지 남은 기간구하기
+        for(int i=0;i<progresses.length;i++){
+            workDate.add((int)Math.ceil((double)(100-progresses[i])/speeds[i]));
+        }
+        int front=workDate.poll(); //하나씩드가면서 초기화
+        int count=1;
+        while(!workDate.isEmpty()){
+            if(front<workDate.peek()){
+                release.add(count);
+                count=1;
+            //    System.out.println(count);
+                front=workDate.poll();
+            }else{//앞기능보다 뒷기능이 먼저 or동시에 구현됨
+                count++;
+     //       System.out.println(count);//3/2
+                workDate.poll();
+            }
+        }
+        release.add(count);//마지막값 isEmpty조건걸려서 별도추가
+        
+        return release.stream().mapToInt(Integer::intValue).toArray();
+    }
+}

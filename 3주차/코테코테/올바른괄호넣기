@@ -10,7 +10,9 @@ class Solution {
             }else if(s.charAt(i)==')'){
                 closeCount++;
             }
-            if(openCount<closeCount){// 왜 opentCount>closeCount는 에러일까?
+            if(openCount<closeCount){// 왜 1) (())()-->true/2) )()(-->false 
+                                    //짝이 맞지 않으면 openCount는 false가 되고 열린괄호는 닫힌괄호보다 작을수밖에 없다 닫혀야 true가 되므로 openCount는 
+                                    //closeCount보다 작다
                 return false;
             } 
         }

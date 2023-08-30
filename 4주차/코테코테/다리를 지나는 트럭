@@ -1,0 +1,36 @@
+//truck_weights 트럭수와 무게를 알수있는 배열
+import java.util.*;
+class Solution {
+    public int solution(int bridge_length, int weight, int[] truck_weights) {
+        int answer = 0;
+        Queue<Integer> bridge=new LinkedList<>();
+        //비어있는 다리 공간 0
+        for(int i=0;i<bridge_length;i++){
+            bridge.offer(0);
+        }
+        int index=0;
+        //다리 현재트럭무게
+        int currentWeight=0;
+        while(index<truck_weights.length){
+            //현재다리무게-곧나갈트럭의무게
+            currentWeight-=bridge.poll();
+            //새트럭 들어오니까 1초추가
+            answer++;
+            //현재다리무게+들어올트럭무게비교합으로 트럭무게비교=>????이부분구현이 어려웠다
+            if(currentWeight+truck_weights[index]<=weight){
+                //무게버티면 다리에트럭추가
+                bridge.offer(truck_weights[index]);
+                //현재다리에있는 트럭무게에 새트럭무게더해주기=>???여기도 어렵다
+                //다음트럭지정하기위해 후위연산자써주기위해 index증가=>???여기도 언뜻생각이안난다
+                currentWeight+=truck_weights[index++];
+            }else{
+                //버티지못하면0
+                bridge.offer(0);
+            }
+            
+        }
+        //처음 설정0 다리가 전부 대체되면 결국 처음다리길이와 같다
+        //트럭이지나간시간+다리길이
+        return answer+bridge_length;
+    }
+}

@@ -1,105 +1,81 @@
 import java.util.*;
 
-class Node implements Comparable<Node>{
-    int x; int y; int num;
-    Node prev=null; Node next=null; 
-    
-    public Node(int x, int y, int num){
-        this.x=x;
-        this.y=y;
-        this.num=num;
-    }
-    
-    public int compareTo(Node n){
-        return n.y-this.y;
-    }
-}
-
 class Solution {
     
-    static Node[] nodes;
-    static Node root;
-    static List<Integer> preOrderList=new ArrayList();
-    static List<Integer> postOrderList=new ArrayList();
+    static LinkedList<Integer>[] wins; //각 player이 이긴 player
+    static LinkedList<Integer>[] loses; //각 player이 진 player
+    static int nSize;
+    
+    public static int solution(int n, int[][] results) {
+        //wins, loses initialize
+        nSize=n;
+        wins=new LinkedList[nSize+1];
+        loses=new LinkedList[nSize+1];
         
-    public static int[][] solution(int[][] nodeinfo) {
-        PriorityQueue<Node> queue=new PriorityQueue();
-        nodes=new Node[nodeinfo.length+1];
         
-        for(int i=0;i<nodeinfo.length;i++){
-            int[] coordinate=nodeinfo[i];
-            Node node=new Node(coordinate[0], coordinate[1], i+1);
-            nodes[i]=node;
+        for(int i=0;i<=nSize;i++){
+            wins[i]=new LinkedList();
+            loses[i]=new LinkedList();
+        }
+        
+        for(int[] result:results){
+            int winner=result[0]; int loser=result[1];
             
-            queue.add(node);
+            wins[winner].addLast(loser);
+            loses[loser].addLast(winner);
         }
         
-        root=queue.poll();
+        int cnt=0;
+        for(int i=1;i<=nSize;i++){
+            if(canRank(i))
+                cnt++;
+        }
+        
+        return cnt;
+    }
+    
+    //현재 i번 선수가 순위를 매길 수 있는지 
+    static boolean canRank(int i){
+        int cnt=0;
+        LinkedList<Integer> iWin=wins[i];
+        LinkedList<Integer> iLose=loses[i];
+        
+        boolean[] visited=new boolean[nSize+1];
+        LinkedList<Integer> queue=new LinkedList();
+        visited[i]=true;
+        queue.addLast(i);
+    
+        //1. 현재 i가 이긴 선수들 집계 -> 이긴 선수들이 이긴 선수들 집계 -> ... 
+        // = i보다 낮은 랭크 집계 
         while(!queue.isEmpty()){
-            Node n=queue.poll();
-            addNode(n);
-        }
-        
-        //전위순회
-        preOrder(root);
-        
-        //후위순회
-        postOrder(root);
-        
-        //ans 정제
-        int nodeSize=nodeinfo.length;
-        int[] preOrderAns=new int[nodeSize];
-        int[] postOrderAns=new int[nodeSize];
-    
-        for(int i=0;i<nodeSize;i++){
-            preOrderAns[i]=preOrderList.get(i);
-            postOrderAns[i]=postOrderList.get(i);
-        }
-        
-        int[][] ans={
-            preOrderAns, postOrderAns
-        };
-        
-        return ans;
-    }
-    
-    //전위
-    static void preOrder(Node n){
-        if(n==null)
-            return;
-        
-        preOrderList.add(n.num);
-        preOrder(n.prev);
-        preOrder(n.next);
-    }
-    //후위
-    static void postOrder(Node n){
-        if(n==null)
-            return;
-        
-        postOrder(n.prev);
-        postOrder(n.next);
-        postOrderList.add(n.num);
-    }
-    
-    //tree에 값 넣기 
-    static void addNode(Node n){
-        Node current=root;
-        
-        while(true){
-            if(current.x>n.x){
-                if(current.prev==null){
-                    current.prev=n;
-                    break;
+            int player=queue.poll();
+            LinkedList<Integer> playerWins=wins[player];
+            
+            for(int pw:playerWins){
+                if(!visited[pw]){
+                    visited[pw]=true;
+                    queue.addLast(pw);
+                    cnt++;
                 }
-                current=current.prev;
-            } else{
-                if(current.next==null){
-                    current.next=n;
-                    break;
-                }
-                current=current.next;
             }
         }
+        
+        //2. i가 진 선수들 집계 -> 진 선수들이 진 선수들 집계 -> ...
+        // = i보다 높은 랭크 집계 
+        queue.addLast(i);
+        while(!queue.isEmpty()){
+            int player=queue.poll();
+            
+            LinkedList<Integer> playerLoses=loses[player];
+            for(int pl:playerLoses){
+                if(!visited[pl]){
+                    cnt++;
+                    visited[pl]=true;
+                    queue.addLast(pl);
+                }
+            }
+        }
+        
+        return cnt==nSize-1?true:false;
     }
 }

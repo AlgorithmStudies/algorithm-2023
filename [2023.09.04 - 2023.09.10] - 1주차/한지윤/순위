@@ -1,0 +1,36 @@
+class Solution {
+    public int solution(int n, int[][] results) {
+		boolean[][] game=new boolean[n][n];
+		int answer=0;
+        //이부분은 좀 애매...왜 굳이 
+		for(int i=0;i<results.length;i++) {
+			game[results[i][0]-1][results[i][1]-1]=true;
+//            System.out.print(results[i][0]-1);//3 3 2 0 1
+            System.out.println();
+             System.out.print(results[i][1]-1);// 2 1 1 1 4
+		}
+		//2번수 거쳐가는정점 [1,3,4]->[2]->[5]//j->i, i->k , j->k
+		for(int i=0;i<n;i++) {
+			for(int j=0;j<n;j++) {
+				for(int k=0;k<n;k++) {
+					if(game[j][i]&&game[i][k]) {
+						game[j][k]=true;
+					}
+				}
+			}
+        }
+		//최단거리 결과구하기
+		for(int i=0;i<n;i++) {
+			int result=0;
+			for(int j=0;j<n;j++) {
+				if(game[i][j] || game[j][i]) {
+					result++;
+				}
+			}
+			if(result==n-1) {//결과를 n-1로 선수순위를 확인
+				answer++;
+			}
+		}
+		return answer;
+    }
+}

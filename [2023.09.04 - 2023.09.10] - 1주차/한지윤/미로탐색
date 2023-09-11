@@ -1,0 +1,89 @@
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Scanner;
+public class Miro_2178 {
+	static int dx[] = {1,-1,0,0};//??
+    static int dy[] = {0,0,1,-1};//??
+    // BFS 메소드
+  	static void bfs(int[][] a, int[][] check, Dot d) {
+  		Queue<Dot> q = new LinkedList<>(); // BFS를 위한 큐 객체
+  				
+  		q.offer(d); // 초기 0,0 좌표를 큐에 삽입
+  		check[d.getX()][d.getY()] = 1; // 초기 출발 위치는 고정이며 1로 시작
+  		
+  		while(!q.isEmpty()) { // 주변에 1이 없을 때 까지 반복한다.
+  			Dot d_p = q.poll();
+  			int x = d_p.getX();
+  			int y = d_p.getY();
+  						
+  			for(int i=0;i<4;i++) { // 상, 하, 좌, 우 탐색 반복문
+  				int nx = x + dx[i];
+  				int ny = y + dy[i];
+  				
+  				if(nx>=a.length || nx<0 || ny>=a[nx].length || ny < 0) continue;
+  				
+  				if(a[nx][ny] == 0) continue; // 0인 좌표는 무시한다.
+  				
+                  // 체크 배열에 초기화 된 값과 동일하면 방문하지 않았단 뜻이며, 그곳에 값이 1로 갈 수 있는 경로라면
+  				if( check[nx][ny] == Integer.MAX_VALUE && a[nx][ny] == 1){					
+                  	// 해당 체크 배열에 저장되어 있는 경로의 수와 현재 좌표에서 +1 했을 때의 경로의 수 중 최솟값을 저장
+  					check[nx][ny] = Math.min(check[x][y]+1,check[nx][ny]);
+                      // 해당 좌표를 큐에 삽입 후 BFS 탐색 반복
+  					q.offer(new Dot(nx,ny));
+  				}
+  			}			
+  		}		
+  	}
+	public static void main(String[] args) {
+Scanner in = new Scanner(System.in);
+		
+		int n = in.nextInt(); // 행
+		int m = in.nextInt(); // 열
+		
+		int map[][] = new int[n][m]; // 데이터 저장 맵
+		int check[][] = new int [n][m]; // 방문 여부 체크 배열
+		
+		for(int i =0;i<map.length;i++) { // 데이터 입력
+			String str = in.next();
+			for(int j =0;j<map[i].length;j++) {
+				map[i][j] = str.charAt(j)-'0';
+			}
+		}
+        
+		for(int i =0;i<check.length;i++) { // int 형 체크 형 배열 초기화
+        	// 최단 경로를 찾는 것이기 때문에 비교를 위해 초기값은 MAX_VALUE를 사용했다.
+			Arrays.fill(check[i],Integer.MAX_VALUE);
+		}
+		
+		Dot d = new Dot(0,0); // 초기 출발 위치 객체 생성
+		bfs(map,check,d); // BFS 수행
+		
+		System.out.println(check[n-1][m-1]); // 마지막 도착지의 체크 배열에 저장되어 있는 최단 경로 출력
+			
+	  }
+
+}
+class Dot{ // 좌표 저장 클래스
+	int x;
+	int y;
+	
+	public Dot(int x, int y) { 
+		super();
+		this.x = x;
+		this.y = y;
+	}
+	
+	public int getX() {
+		return x;
+	}
+	public void setX(int x) {
+		this.x = x;
+	}
+	public int getY() {
+		return y;
+	}
+	public void setY(int y) {
+		this.y = y;
+	}				
+}

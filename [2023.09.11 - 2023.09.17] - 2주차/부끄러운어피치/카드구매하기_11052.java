@@ -23,7 +23,7 @@ public class 카드구매하기_11052 {
 
         for (int i = 1; i <= n; i++) {
             for (int j = 1; j <= i; j++) {
-				//max함수로 최대값을 갱신한다.  점화식 dp[i-j] + inputArr[j]
+		//max함수로 최대값을 갱신한다.  점화식 dp[i-j] + inputArr[j]
                 dp[i] = Math.max(dp[i], dp[i - j] + inputArr[j]);
             }
         }

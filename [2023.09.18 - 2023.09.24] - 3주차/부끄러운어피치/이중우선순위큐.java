@@ -1,6 +1,5 @@
 import java.util.*;
-
-class 이중우선순위큐 {
+class Solution {
 /*
 * 1. 최소큐와 최대큐로 나눈다.(최대값 최소값 반환을 위해)
 * 문제에서 말한대로 구현한다. 최소값 삭제 및 최댓값 삭제 삽입시 최소큐와 최대큐에 삽입한다.
@@ -8,7 +7,7 @@ class 이중우선순위큐 {
 * 최대큐는 큐에서 가장 먼저 꺼내는 수가 최댓값
 *
  * */
-    public int[] solution(String[] operations) {
+    public  int[] solution(String[] operations) {
         int[] answer = {0,0};
         PriorityQueue<Integer> minQueue = new PriorityQueue();
         PriorityQueue<Integer> maxQueue = new PriorityQueue(Collections.reverseOrder());
@@ -25,7 +24,7 @@ class 이중우선순위큐 {
                     if(!minQueue.isEmpty()) {
                         val = minQueue.peek();
                         minQueue.poll();
-                        minQueue.remove(val);
+                        maxQueue.remove(val);
                     }
                 }
                 // 최댓값 삭제
@@ -33,14 +32,14 @@ class 이중우선순위큐 {
                     if(!maxQueue.isEmpty()) {
                         val = maxQueue.peek();
                         maxQueue.poll();
-                        maxQueue.remove(val);
+                        minQueue.remove(val);
                     }
                 }
             }
             else {  // 추가
                 int value = Integer.parseInt(op.substring(2));
                 maxQueue.offer(value);
-                maxQueue.offer(value);
+                minQueue.offer(value);
             }
         }
         // 큐가 비어있지 않으면 [최댓값, 최솟값]

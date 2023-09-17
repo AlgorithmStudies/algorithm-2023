@@ -1,0 +1,44 @@
+//n+1Cr+1=nCr+nCr+1
+//1)combi(n-1, r-1)+combi(n-1,r);==dp[i][j]=dp[i-1][j-1]+dp[i-1][j];
+//2)nCo=nCn=1==dp[i][i]=1;/dp[i][0]=1
+//StringTokenizer 빈공간포함 부분문자 쪼개서 받기
+import java.io.*;
+import java.util.*;
+public class Main{
+
+	public static void main(String[] args) throws IOException{
+		
+			BufferedReader rc=new BufferedReader(new InputStreamReader(System.in));
+			
+			int[][]dp=new int[30][30];
+			
+			//2) n==r =>1, r==0//주어진조건N,M/30//출력1
+			for(int i=0;i<30;i++) {
+				dp[i][i]=1;
+				dp[i][0]=1;
+			}
+			
+			//입력  2 2,1 5,13 29
+			for(int i=2;i<30;i++) {
+				for(int j=1;j<30;j++) {
+					//1)
+					dp[i][j]=dp[i-1][j-1]+dp[i-1][j];
+				}
+			}
+			int T=Integer.parseInt(rc.readLine());
+			
+			StringTokenizer st;
+			StringBuilder sw=new StringBuilder();
+			
+			//3=T
+			for(int i=0;i<T;i++) {
+				st=new StringTokenizer(rc.readLine()," ");
+				//M개중 N개뽑을때 nCr  n=M, r=N
+				int N=Integer.parseInt(st.nextToken());//N=r
+				int M=Integer.parseInt(st.nextToken());//M=n
+				
+				sw.append(dp[M][N]).append('\n');
+			}
+			System.out.println(sw);
+	}
+}

@@ -3,7 +3,6 @@ class Solution {
     public List<Integer> solution(int[] progresses, int[] speeds) {
         Stack<Integer> stack = new Stack<Integer>();
 
-        //LIFO-STACK - 맨뒤에있는걸 맨먼저 쌓아야함
         //각각의 작업이 완료되는데 걸리는 기간 스택에 저장
         for (int i = progresses.length - 1; i >= 0; i--)
             stack.add((100 - progresses[i]) / speeds[i] + ((100 - progresses[i]) % speeds[i] > 0 ? 1 : 0));

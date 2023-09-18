@@ -1,38 +1,50 @@
+import java.util.*;
 import java.io.*;
 
 class Main{
+
+    static int n;
+    static int[] p;
+    static int[] d;
+
     public static void main(String[] args) throws Exception{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int n=Integer.parseInt(br.readLine());
+        n=Integer.parseInt(br.readLine());
+        p=new int[n+1];
+        d=new int[n+1];
 
-        for(int i=0;i<n;i++){
-            String[] nums=br.readLine().split(" ");
-            int left=Integer.parseInt(nums[0]); int right=Integer.parseInt(nums[1]);
-
-            long[][] d=new long[left+1][right+1];
-
-            dp(left, right, d);
-
-            System.out.println(d[left][right]);
+        String[] nums=br.readLine().split(" ");
+        for(int i=1;i<=n;i++){
+            p[i]=Integer.parseInt(nums[i-1]);
         }
+        dp(n);
 
+        System.out.print(d[n]);
     }
 
-    private static long dp(int left, int right, long[][] d){
-        if(left==0)
-            return 1;
+    static int dp(int num){
+        if(num==0)
+            return 0;
 
-        long sum=0;
-        for(int i=right;i>0;i--){
-            if(left>i)
-                break;
+        if(d[num]!=0)
+            return d[num];
 
-            if(d[left][i]==0)
-                d[left][i]=dp(left-1, i-1, d);
+        //최댓값
+        int max=-1;
+        for(int i=1;i<=num;i++){
+            //i에 해당하는 카드팩 구입
+            int cost=p[i];
+            int rest=num-i;
 
-            sum+=d[left][i];
+            if(d[rest]==0)
+                d[rest]=dp(rest);
+
+            cost+=d[rest];
+
+            if(max<cost)
+                max=cost;
         }
 
-        return d[left][right]=sum;
+        return d[num]=max;
     }
 }

@@ -27,7 +27,7 @@ public class Main {
 		
 		for(int i=3;i<=N;i++) {
 			DP[i]=Math.max(DP[i-2],DP[i-3]+arr[i-1])+arr[i];
-	//		System.out.println(DP[i-2] +","+ DP[i-3]+","+arr[i-1]);
+	//		System.out.println(DP[i-2] +","+ DP[i-3]+","+arr[i-1]);// 왜 i-2/ i-3 /i-1인지 모르겠음 
 			// 10, 0, 20
 			// 30 , 10, 15
 			// 35, 30, 25

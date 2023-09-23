@@ -1,0 +1,74 @@
+//Comparator 기본정렬기준외에 다른기준 정렬
+//Comparable 기본 정렬기준 구현
+//CompareTo() 두 Integer 객체 저장된 int값비교
+//대기요청시간 짧게만들기
+//Dequeue시 우선순위 높은경우
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.PriorityQueue;
+
+class Solution {
+    private static class Job implements Comparable<Job>{
+        int s,d;
+        
+        public Job(int s, int d){
+            this.s=s;
+            this.d=d;
+        }
+        
+        @Override
+        public int compareTo(Job o){
+          //   System.out.println(this.d-o.d);
+            return this.d-o.d;//-3
+        }
+       
+    }
+    
+    public static int solution(int[][] jobs) {
+        PriorityQueue<Job> priority=new PriorityQueue<>();
+        //priority Queue가 우선순위 오름차순이 기본(최소힙말함:부모가 자식보다 작거나 같다)
+        Arrays.sort(jobs, new Comparator<int[]>(){
+            @Override
+            public int compare(int[] o1, int[] o2){
+                if(o1[0]==o2[0]){
+                    //8,18번
+                    return o1[1] - o2[1];//3-9=6/9-6=3/=>9
+                }
+                return o1[0] - o2[0];
+            }
+        });
+        int n=jobs.length;
+        int idx=0;
+        int end=0;
+        int cnt=0;
+        int total=0;
+        while(cnt<n){
+            //현재시간 작업요청을 우선순위큐할당
+            if(idx<n){
+                while(jobs[idx][0]<=end){
+                    priority.add(new Job(jobs[idx][0], jobs[idx][1]));
+                    idx++;
+                    if(idx==n)
+                        break;
+                }
+            }
+            //작업요청 없을때
+            if(priority.isEmpty()){
+                if(idx<n){
+                    priority.add(new Job(jobs[idx][0], jobs[idx][1]));
+                    end=jobs[idx][0];
+                    idx++;
+                }
+            }
+            //우선순위 높은것부터 처리/3 6 9  
+            if(!priority.isEmpty()){
+                Job job=priority.poll();
+                total+=(end-job.s+job.d);
+                end+=job.d;
+                cnt++;
+            }
+        }
+     
+        return total/n;
+    }
+}

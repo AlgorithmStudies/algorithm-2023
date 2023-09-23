@@ -1,0 +1,33 @@
+// 힙-중복값허용,반정렬상태
+//최소힙:부모노드가 자식노드보다 작거나 같다/최대힙:부모노드가 자식노드보다크거나같다
+import java.util.*;
+class Solution {
+    public int[] solution(String[] operations) {
+        int[] answer = new int[2];
+        ArrayList<Integer> save=new ArrayList();
+        PriorityQueue<Integer> maxQueue=new PriorityQueue(Collections.reverseOrder());
+        PriorityQueue<Integer> minQueue=new PriorityQueue();
+        
+        for(String operation:operations){
+            String[] opera=operation.split(" ");
+            int num=Integer.parseInt(opera[1]);
+            if(opera[0].equals("I")){
+                maxQueue.add(num);//16 /중간비어있음/  653/97 /45/333
+                minQueue.add(num);//-5643/123    /-45/-642
+                save.add(num);
+           
+            }else{
+                if(num==-1)//최대값,최소값삭제
+                    maxQueue.remove(minQueue.poll());
+                else
+                    minQueue.remove(maxQueue.poll());
+            }
+     //           System.out.println(save);//전체 숫자배열저장
+            //16/-5643/-1/1/123/-1
+            //-45/653/1/-642/45/97/1/-1/333
+        }
+    answer[0]=maxQueue.isEmpty() ? 0:maxQueue.peek();
+    answer[1]=minQueue.isEmpty() ? 0:minQueue.peek();
+        return answer;
+    }
+}

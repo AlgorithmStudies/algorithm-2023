@@ -1,0 +1,42 @@
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.IOException;
+public class Main {
+
+	public static void main(String[] args) throws IOException {
+		
+		BufferedReader buffer=new BufferedReader(new InputStreamReader(System.in));
+		
+		int N=Integer.parseInt(buffer.readLine());
+		
+		int[] DP=new int[N+1];
+		int[] arr=new int[N+1];
+		//N=6
+		for(int i=1;i<=N;i++) {
+			arr[i]=Integer.parseInt(buffer.readLine());//6개 두번째줄부터 넣기
+		}
+		
+		//index=0은 시작점
+		DP[1]=arr[1];
+		
+		//N이 1이 입력될수도 있기 때문에 예외처리를 해줄 필요가 있다
+		if(N>=2) {
+			DP[2]=arr[1]+arr[2];
+		//	System.out.println(arr[1]+","+arr[2]);//10 20
+		}
+		
+		for(int i=3;i<=N;i++) {
+			DP[i]=Math.max(DP[i-2],DP[i-3]+arr[i-1])+arr[i];
+	//		System.out.println(DP[i-2] +","+ DP[i-3]+","+arr[i-1]);// 왜 i-2/ i-3 /i-1인지 모르겠음 
+			// 10, 0, 20
+			// 30 , 10, 15
+			// 35, 30, 25
+			// 55, 35, 10
+			
+		}
+		
+		System.out.println(DP[N]);
+
+	}
+
+}
